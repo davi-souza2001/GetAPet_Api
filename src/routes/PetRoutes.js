@@ -3,7 +3,8 @@ const Petcontroller = require('../controllers/Petcontroller')
 
 // middlewares
 const verifytoken = require('../helpers/verify-token')
+const { imageUpload } = require('../helpers/image-upload')
 
-router.post('/create', verifytoken, Petcontroller.create)
+router.post('/create', verifytoken, imageUpload.array('images'), Petcontroller.create)
 
 module.exports = router

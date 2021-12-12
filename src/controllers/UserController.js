@@ -69,7 +69,7 @@ module.exports = class UserController {
     }
 
     static async login(req, res) {
-        const {email, password} = req.body
+        const { email, password } = req.body
 
         if (!email) {
             res.status(422).json({ message: 'O email é obrigatório' })
@@ -92,7 +92,7 @@ module.exports = class UserController {
         //check if password match with db password
         const checkPassword = await bcrypt.compare(password, user.password)
 
-        if(!checkPassword) {
+        if (!checkPassword) {
             res.status(422).json({ message: "Senha inválida !" })
             return
         }
@@ -104,7 +104,7 @@ module.exports = class UserController {
 
         let currentUser
 
-        if(req.headers.authorization) {
+        if (req.headers.authorization) {
 
             const token = getToken(req)
             const decoded = jwt.verify(token, 'nossosecret')
@@ -112,10 +112,23 @@ module.exports = class UserController {
             currentUser = await User.findById(decoded.id)
 
             currentUser.password = undefined
-        } else{
+        } else {
             currentUser = null
         }
 
         res.status(200).send(currentUser)
+    }
+
+    static async getUserById(req, res) {
+        const id = req.params.id
+
+        const user = await User.findById(id).select('-password')
+
+        if (!user) {
+            res.status(422).json({ message: "Usuário não encontrado !" })
+            return
+        } else{
+            res.status(200).json({ user })
+        }
     }
 }

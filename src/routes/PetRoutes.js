@@ -13,5 +13,6 @@ router.get('/:id', PetController.getPetById)
 router.delete('/:id', verifytoken, PetController.removePetById)
 router.patch('/:id', verifytoken, imageUpload.array('images'), PetController.updatePet)
 router.patch('/schedule/:id', verifytoken, PetController.schedule)
+router.patch('/conclude/:id', verifytoken, PetController.concludeAdoption)
 
 module.exports = router

@@ -7,7 +7,7 @@ const getUserByToken = require('../helpers/get-user-by-token')
 module.exports = class Petcontroller {
     // create a pet
     static async create(req, res) {
-        
+
         const { name, age, weight, color } = req.body
 
         const images = req.files
@@ -17,24 +17,24 @@ module.exports = class Petcontroller {
         // images upload
 
         // validations
-        if(!name) {
-            res.status(422).json({message: 'O nome é obrigatório'})
+        if (!name) {
+            res.status(422).json({ message: 'O nome é obrigatório' })
             return
         }
-        if(!age) {
-            res.status(422).json({message: 'A idade é obrigatória'})
+        if (!age) {
+            res.status(422).json({ message: 'A idade é obrigatória' })
             return
         }
-        if(!weight) {
-            res.status(422).json({message: 'O peso é obrigatório'})
+        if (!weight) {
+            res.status(422).json({ message: 'O peso é obrigatório' })
             return
         }
-        if(!color) {
-            res.status(422).json({message: 'A cor é obrigatória'})
+        if (!color) {
+            res.status(422).json({ message: 'A cor é obrigatória' })
             return
         }
-        if(!images) {
-            res.status(422).json({message: 'A imagem é obrigatória'})
+        if (!images) {
+            res.status(422).json({ message: 'A imagem é obrigatória' })
             return
         }
 
@@ -70,7 +70,7 @@ module.exports = class Petcontroller {
                 newPet
             })
         } catch (error) {
-            res.status(500).json({message: error})
+            res.status(500).json({ message: error })
         }
     }
 
@@ -87,8 +87,18 @@ module.exports = class Petcontroller {
         const token = getToken(req)
         const user = await getUserByToken(token)
 
-        const pets = await Pet.find({'user._id': user._id}).sort('-createdAt')
+        const pets = await Pet.find({ 'user._id': user._id }).sort('-createdAt')
 
-        res.status(200).json({pets})
+        res.status(200).json({ pets })
+    }
+
+    static async getAllUserAdoptions(req, res) {
+        //get user from token
+        const token = getToken(req)
+        const user = await getUserByToken(token)
+
+        const pets = await Pet.find({ 'adopter._id': user._id }).sort('-createdAt')
+
+        res.status(200).json({ pets })
     }
 }

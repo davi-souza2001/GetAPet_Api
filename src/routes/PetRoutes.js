@@ -9,5 +9,6 @@ router.post('/create', verifytoken, imageUpload.array('images'), Petcontroller.c
 router.get('/', Petcontroller.getAll)
 router.get('/mypets', verifytoken, Petcontroller.getAllUserPets)
 router.get('/myadoptions', verifytoken, Petcontroller.getAllUserAdoptions)
+router.get('/:id', Petcontroller.getPetById)
 
 module.exports = router
